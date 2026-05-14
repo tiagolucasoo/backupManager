@@ -11,10 +11,14 @@ def chave_criptografia():
             file.write(key)
 
         if os.name == "nt":
-            subprocess.run(
-                ["attrib", "+H", KEY_FILE],
-                check=False
-            )
+            try:
+                subprocess.run(["attrib", "+H", KEY_FILE],
+                check=False,
+                creationflags=subprocess.CREATE_NO_WINDOW
+                if hasattr(subprocess, 'CREATE_NO_WINDOW') else 0)
+            except Exception:
+                # Se der erro 5 - Acesso negado devido a ocultação do arquivo com a criptografia da senha, esse será ignorado e a criptografia ficará visivel.
+                pass
     else:
         with open(KEY_FILE, "rb") as file:
             key = file.read()

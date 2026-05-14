@@ -35,6 +35,7 @@ class BackupToolApp(ctk.CTk):
     def build_ui(self):
         self.build_header()
         self.build_server_section()
+        self.build_config_type_database()
         self.build_config_section()
         self.build_database_section()
         self.build_action_section()
@@ -97,8 +98,29 @@ class BackupToolApp(ctk.CTk):
         btn.configure(width=120)
         btn.pack(side="left")
 
+    def build_config_type_database(self):
+        self.config_type = SectionFrame(self, "2. Tipo de Banco de Dados")
+        self.config_type.pack(fill="x", padx=PADDING_X, pady=(0, PADDING_Y))
+
+        row = ctk.CTkFrame(self.config_type, fg_color="transparent")
+        row.pack(fill="x", padx=15, pady=(0, 15))
+
+        self.radio_var = ctk.IntVar(value=1) 
+
+        radiobutton_1 = ctk.CTkRadioButton(row, text="SQL Server", variable=self.radio_var, value=1)
+        radiobutton_1.pack(side="left", padx=(0, 20)) # padx afasta um botão do outro
+        
+        radiobutton_2 = ctk.CTkRadioButton(row, text="MySQL", variable=self.radio_var, value=2)
+        radiobutton_2.pack(side="left", padx=(0, 20))
+        
+        radiobutton_3 = ctk.CTkRadioButton(row, text="MongoDB", variable=self.radio_var, value=3)
+        radiobutton_3.pack(side="left", padx=(0, 20))
+        
+        radiobutton_4 = ctk.CTkRadioButton(row, text="SQLite", variable=self.radio_var, value=4)
+        radiobutton_4.pack(side="left")
+
     def build_config_section(self):
-        self.config_section = SectionFrame(self, "2. Configurações")
+        self.config_section = SectionFrame(self, "3. Configurações Gerais")
         self.config_section.pack(fill="x", padx=PADDING_X, pady=(0, PADDING_Y))
 
         self.entry_sqlpackage = create_input(self.config_section, "Caminho do SqlPackage.exe")
@@ -114,7 +136,7 @@ class BackupToolApp(ctk.CTk):
         self.lbl_destino.pack(pady=(0, 15))
 
     def build_database_section(self):
-        self.database_section = SectionFrame(self, "3. Bancos de Dados")
+        self.database_section = SectionFrame(self, "4. Lista de Bancos de Dados")
         self.database_section.pack(fill="x", padx=PADDING_X, pady=(0, PADDING_Y))
 
         row = ctk.CTkFrame(self.database_section, fg_color="transparent")
@@ -124,7 +146,7 @@ class BackupToolApp(ctk.CTk):
         self.entry_novo_banco.pack(side="left", fill="x", expand=True, padx=(0, 10))
 
         btn = create_button(row, "Adicionar", self.banco_dinamico)
-        btn.configure(width=130)
+        btn.configure(width=50)
         btn.pack(side="left")
 
         self.scroll_bancos = ctk.CTkScrollableFrame(self.database_section, height=140, fg_color=BG_MAIN)
